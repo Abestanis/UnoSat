@@ -1,0 +1,5 @@
+Name,Type,Description
+latitude,deg,The current latitude of the system.
+longitude,deg,The current longitude of the system.
+attitude,mm,The current attitude of the system.
+visible satellites,uint8_t,The number of visible satellites.

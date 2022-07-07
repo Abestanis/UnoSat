@@ -1,0 +1,103 @@
+#include "Receiver.h"
+
+
+
+void Receiver::handleMessages() {
+    if (loraStream.available()) {
+//        Serial.print("New Data ");
+//        Serial.print(loraMessageBuffer.availableBytes());
+        loraMessageBuffer.copyFrom(loraStream);
+//        Serial.print(" => ");
+//        Serial.println(loraMessageBuffer.availableBytes());
+//        if (loraMessageBuffer.availableBytes()) {
+//            uint8_t buffer[loraMessageBuffer.availableBytes()];
+//            if (loraMessageBuffer.peek(&buffer, loraMessageBuffer.availableBytes(), 0)) {
+//                Serial.print('\'');
+//                Serial.write(buffer, loraMessageBuffer.availableBytes());
+//                Serial.print('\'');
+//            } else {
+//                Serial.print("<Peek failed>");
+//            }
+//        }
+//        Serial.println();
+        while (parseMessage(*loraMessageBuffer, &handler)) {
+        }
+    }
+}
+
+void Receiver::onDataMessage(ms_t time, deg_t latitude, deg_t longitude, mm_t attitude,
+                             uint8_t visibleSatellites, celsius_t temperature, percent_t humidity,
+                             pascal_t pressure) {
+    Serial.print("[DATA ] (");
+    Serial.print(time.ms);
+    Serial.print(") ");
+    screen.printAt("Temp: ", 0, 2);
+    screen.print(temperature.celsius);
+    screen.print(" C");
+    Serial.print("Temperature: ");
+    Serial.print(temperature.celsius);
+    screen.clearToNextLine();
+    screen.print("Hum: ");
+    screen.print(humidity.percent);
+    screen.print(" %");
+    Serial.print(", Humidity: ");
+    Serial.print(humidity.percent);
+    screen.clearToNextLine();
+    screen.printAt("Press: ");
+    screen.print(pressure.pascal);
+    screen.print(" Pa");
+    Serial.print(", Pressure: ");
+    Serial.print(pressure.pascal);
+    screen.clearToNextLine();
+    screen.printAt("GPS SIV: ");
+    screen.print(visibleSatellites);
+    screen.clearRemainingLine();
+    Serial.print(", latitude: ");
+    Serial.print(latitude.deg);
+    Serial.print(", longitude: ");
+    Serial.print(longitude.deg);
+    Serial.print(", attitude: ");
+    Serial.print(attitude.mm);
+    Serial.print(", SIV: ");
+    Serial.print(visibleSatellites);
+    Serial.println();
+}
+
+void Receiver::onNewLogMessage(ms_t time, LogLevel level, uint16_t size, const char* message) {
+    switch (level) {
+    case LOG_DEBUG:
+        Serial.print("[DEBUG]");
+        break;
+    case LOG_INFO:
+        Serial.print("[INFO ]");
+        break;
+    case LOG_ERROR:
+        Serial.print("[ERROR]");
+        break;
+    default:
+        Serial.print("[?: ");
+        Serial.print((int) level);
+        Serial.print(']');
+    }
+    Serial.print(" (");
+    Serial.print(time.ms);
+    Serial.print(") ");
+    Serial.write(message, size);
+    Serial.println();
+}
+
+void Receiver::handleParserError(ParserError error) {
+    switch (error) {
+    case INVALID_MESSAGE:
+        Serial.println("Invalid message type!");
+        break;
+    case CHECKSUM_ERROR:
+        Serial.println("Checksum Error!");
+        break;
+    case DYNAMIC_SIZE_TOO_LARGE:
+        Serial.println("Dynamic size was too large!");
+        break;
+    default:
+        Serial.println("Unknown error!");
+    }
+}

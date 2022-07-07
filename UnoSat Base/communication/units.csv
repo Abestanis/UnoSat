@@ -1,0 +1,7 @@
+Name,Type,Description
+ms,uint32_t,A time in milliseconds.
+mm,int32_t,A distance in milli meter.
+deg,float,An angle in degrees.
+celsius,float,A temperature in degrees celsius.
+pascal,uint32_t,A barometric pressure in Pascal.
+percent,float,A value between 0 and 100.

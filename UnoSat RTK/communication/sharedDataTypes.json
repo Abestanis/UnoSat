@@ -1,0 +1,23 @@
+{
+  "TelemetryMessageHeader": {
+    "__doc__": "The header of a message for the ground station.",
+    "sync byte 1": {
+      "__type__": "uint8_t",
+      "__value__": "SYNC_BYTE_1",
+      "__doc__": "The first synchronisation byte."
+    },
+    "sync byte 2": {
+      "__type__": "uint8_t",
+      "__value__": "SYNC_BYTE_2",
+      "__doc__": "The second synchronisation byte."
+    },
+    "checksum": {
+      "__type__": "uint16_t",
+      "__doc__": "The checksum of the message.\nThe two sync bytes and the checksum are not included in the checksum, but the telemetry data is included."
+    },
+    "type": {
+      "__type__": "TelemetryType",
+      "__doc__": "The type of telemetry that is send in this message."
+    }
+  }
+}
