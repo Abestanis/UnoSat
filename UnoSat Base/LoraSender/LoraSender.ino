@@ -1,7 +1,5 @@
 #include <SPI.h>
-#include <SD_MMC.h>
 #include <LoRa.h>
-#include <FS.h>
 #include <stdlib.h>
 
 //Libraries for OLED Display
