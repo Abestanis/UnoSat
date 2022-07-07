@@ -35,8 +35,6 @@
 //Define the pins for RX and TX, we can choose those which suit us
 #define RX 23
 #define TX 4
-#define ARDUINO_MAX_RX_BUFFER 64U
-#define ARDUINO_RX_BUFFER_OVERFLOW_AVOIDANCE_WAIT_MS 300
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RST);
 HardwareSerial& forwardSerial = Serial2;
@@ -99,19 +97,7 @@ void loop() {
     if (packetSize) {
         while (LoRa.available()) {
             String buffer = LoRa.readString();
-            size_t size = buffer.length();
-            size_t offset = 0;
-            while (size > ARDUINO_MAX_RX_BUFFER) {
-                // The SoftwareSerial on the Arduino has a RX buffer of 64 bytes, if we send more
-                // than that too fast there is a possibility that the buffer overflows and some
-                // data is lost. Limit the data rate by only sending 64 bytes at a time and waiting
-                // in between sends.
-                forwardSerial.write(&buffer.c_str()[offset], ARDUINO_MAX_RX_BUFFER);
-                offset += ARDUINO_MAX_RX_BUFFER;
-                size -= ARDUINO_MAX_RX_BUFFER;
-                delay(ARDUINO_RX_BUFFER_OVERFLOW_AVOIDANCE_WAIT_MS);
-            }
-            forwardSerial.write(&buffer.c_str()[offset], size);
+            forwardSerial.write(buffer.c_str(), buffer.length());
             if (haveDisplay) {
                 display.setCursor(0, 30);
                 display.print(++packageCount);
