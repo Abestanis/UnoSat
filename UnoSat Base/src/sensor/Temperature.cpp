@@ -4,6 +4,10 @@
 bool Sensor::Temperature::connect() {
     sensor.begin();
     isConnected = !isnan(sensor.readTemperature());
+    if (!isConnected) { // Takes a bit after power on to answer
+        delay(10);
+        isConnected = !isnan(sensor.readTemperature());
+    }
     return isConnected;
 }
 
