@@ -6,11 +6,13 @@
 #include "Screen.h"
 
 #include "log.h"
+#include "LoRa.h"
 
 static Screen screen;
 static HardwareSerial& rtkSerial = Serial;
 
 static SoftwareSerial loraSerial(8, 9);
+LoRa lora(loraSerial);
 static RtkGps<(sizeof(TelemetryMessageHeader) + 128) * 2> rtkGps(rtkSerial);
 static Sensor::Temperature temperatureSensor(3);
 static Sensor::Pressure pressureSensor;
@@ -24,13 +26,15 @@ static void delayUntil(ms_t wakeTime) {
 }
 
 extern "C" bool writeTelemetry(void* data, size_t size) {
-    return loraSerial.write((const uint8_t*) data, size) == size;
+    lora.send(data, size);
+    return true;
 }
 
 
 void setup() {
     loraSerial.begin(19200);
     Logger::enableDebugMessages = true;
+    lora.begin(868.0);
     Logger::info("Booting...");
     if (!screen.init()) {
         Logger::error("Screen is not available");
