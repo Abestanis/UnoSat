@@ -15,8 +15,6 @@ extern "C" {
 #define SYNC_BYTE_1 170
 /** The second byte of every message. */
 #define SYNC_BYTE_2 85
-/** The baud rate to use for communication. */
-#define COMMUNICATION_BAUD_RATE 115200
 
 
 /** All possible types of telemetry messages. */

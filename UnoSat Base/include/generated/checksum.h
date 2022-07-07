@@ -18,11 +18,11 @@ extern "C" {
  * the overflown bytes are treated as zero.
  *
  * @param buffer An accessor to the data to calculate the checksum from.
- * @param at The byte offset to start reading from the buffer.
  * @param size The size of the data in bytes.
+ * @param at The byte offset to start reading from the buffer.
  * @return Whether the telecommand could be handled.
  */
-extern WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t at, size_t size);
+extern WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t size, size_t at);
 
 /**
  * Calculate a CRC16 checksum from the data.

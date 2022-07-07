@@ -5,7 +5,7 @@
 /** The polynomial to use for the crc calculation in nominal form. */
 #define POLYNOMIAL 0x8811U
 
-WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t at, size_t size) {
+WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t size, size_t at) {
     uint16_t crc = 0xFFFFU;
     for (size_t i = 0; i < size; i++) {
         uint8_t byte = 0;
@@ -24,5 +24,5 @@ WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t at, siz
 
 WEAK uint16_t calculateChecksum(const void* data, size_t size) {
     CONSTRUCT_SIMPLE_ACCESSOR_FROM_BUFFER(buffer, data, size);
-    return calculateChecksumFromBuffer(&buffer, 0, size);
+    return calculateChecksumFromBuffer(&buffer, size, 0);
 }
