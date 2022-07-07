@@ -18,6 +18,12 @@ public:
         }
     }
 
+    void copy(const void* otherBuffer, size_t size) {
+        for (size_t i = 0; i < size; i++) {
+            buffer.push(static_cast<const uint8_t*>(otherBuffer)[i]);
+        }
+    }
+
     size_t availableBytes() const {
         return buffer.size();
     }

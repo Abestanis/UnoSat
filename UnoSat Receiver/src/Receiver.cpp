@@ -1,33 +1,23 @@
 #include "Receiver.h"
 
 
-
 void Receiver::handleMessages() {
-    if (loraStream.available()) {
-//        Serial.print("New Data ");
-//        Serial.print(loraMessageBuffer.availableBytes());
-        loraMessageBuffer.copyFrom(loraStream);
-//        Serial.print(" => ");
-//        Serial.println(loraMessageBuffer.availableBytes());
-//        if (loraMessageBuffer.availableBytes()) {
-//            uint8_t buffer[loraMessageBuffer.availableBytes()];
-//            if (loraMessageBuffer.peek(&buffer, loraMessageBuffer.availableBytes(), 0)) {
-//                Serial.print('\'');
-//                Serial.write(buffer, loraMessageBuffer.availableBytes());
-//                Serial.print('\'');
-//            } else {
-//                Serial.print("<Peek failed>");
-//            }
-//        }
-//        Serial.println();
-        while (parseMessage(*loraMessageBuffer, &handler)) {
-        }
+    if (!lora.available()) {
+        return;
+    }
+    uint8_t buffer[LoRa::MAX_READ_SIZE];
+    uint8_t receivedBytes = LoRa::MAX_READ_SIZE;
+    if (!lora.read(buffer, receivedBytes)) {
+        return;
+    }
+    loraMessageBuffer.copy(buffer, receivedBytes);
+    while (parseMessage(*loraMessageBuffer, &handler)) {
     }
 }
 
-void Receiver::onDataMessage(ms_t time, deg_t latitude, deg_t longitude, mm_t attitude,
-                             uint8_t visibleSatellites, celsius_t temperature, percent_t humidity,
-                             pascal_t pressure) {
+void Receiver::onDataMessage(
+        ms_t time, deg_t latitude, deg_t longitude, mm_t attitude, uint8_t visibleSatellites,
+        celsius_t temperature, percent_t humidity, pascal_t pressure) {
     Serial.print("[DATA ] (");
     Serial.print(time.ms);
     Serial.print(") ");

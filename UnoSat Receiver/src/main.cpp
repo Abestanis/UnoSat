@@ -6,7 +6,8 @@
 Screen screen;
 
 SoftwareSerial loraSerial(2, 3);
-Receiver loraReceiver(loraSerial, screen);
+LoRa lora(loraSerial);
+Receiver loraReceiver(lora, screen);
 
 void setup() {
     Serial.begin(115200);
@@ -17,6 +18,7 @@ void setup() {
     screen.printCentered("UnoSat Receiver", 0);
     screen.printCentered("Booting...", 2);
     loraSerial.begin(9600);
+    lora.begin(868.0);
     Serial.println("Boot complete");
     screen.printCentered("Boot complete", 2);
 }

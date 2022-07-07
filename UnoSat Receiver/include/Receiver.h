@@ -6,11 +6,12 @@
 #include "CircularBufferHandler.h"
 #include "Screen.h"
 #include "generated/receiver.h"
+#include "LoRa.h"
 
 
 class Receiver {
 public:
-    explicit Receiver(Stream& stream, Screen& screen) : loraStream(stream), screen(screen) {
+    explicit Receiver(LoRa& lora, Screen& screen) : lora(lora), screen(screen) {
     };
 
     ~Receiver() = default;
@@ -25,7 +26,7 @@ protected:
 
     static void handleParserError(ParserError error);
 
-    Stream& loraStream;
+    LoRa& lora;
     Screen& screen;
     CircularBufferHandler<uint8_t, 256> loraMessageBuffer = {};
 
