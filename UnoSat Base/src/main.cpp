@@ -48,6 +48,9 @@ void setup() {
     }
     Logger::info("Boot complete");
     screen.printCentered("Boot complete", 2);
+    screen.printAt("LoRa: ", 0, 2);
+    screen.print(loraConnectionOk ? "Ok" : "Missing");
+    screen.clearToNextLine();
 }
 
 void loop() {
@@ -78,7 +81,7 @@ void loop() {
         }
     }
     hasLastSend = !hasLastSend;
-    screen.printAt("Temp: ", 0, 2);
+    screen.printAt("Temp: ", 0, 3);
     screen.print(temperature.celsius);
     screen.print(" C");
     screen.clearToNextLine();
