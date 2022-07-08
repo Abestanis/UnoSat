@@ -4,8 +4,6 @@
 #include "generated/telemetry.h"
 #include "log.h"
 
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
-
 
 bool Logger::enableDebugMessages = false;
 
@@ -17,8 +15,9 @@ bool Logger::enableDebugMessages = false;
  * @param args Arguments for creating the message.
  */
 static void sendMessage(LogLevel level, const char* format, va_list args) {
-    char buffer[128];
-    size_t length = vsnprintf(buffer, ARRAY_SIZE(buffer), format, args);
+    size_t length = vsnprintf(nullptr, 0, format, args) + 1;
+    char buffer[length + 1];
+    vsnprintf(buffer, length, format, args);
     sendTelemetryLog(ms_t(millis()), level, length, buffer);
 }
 

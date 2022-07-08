@@ -11,7 +11,7 @@
 
 class Receiver {
 public:
-    explicit Receiver(LoRa& lora, Screen& screen) : lora(lora), screen(screen) {
+    explicit Receiver(LoRa<HardwareSerial>& lora, Screen& screen) : lora(lora), screen(screen) {
     };
 
     ~Receiver() = default;
@@ -26,7 +26,7 @@ protected:
 
     static void handleParserError(ParserError error);
 
-    LoRa& lora;
+    LoRa<HardwareSerial>& lora;
     Screen& screen;
     CircularBufferHandler<uint8_t, 256> loraMessageBuffer = {};
 
