@@ -101,3 +101,27 @@ UNIT_TYPE(float, percent);
 #ifdef __cplusplus
 }
 #endif
+
+
+#ifdef __cplusplus
+#define OPERATOR_DECLARATION(unit)                              \
+    unit ## _t operator+(unit ## _t left, unit ## _t right);    \
+    unit ## _t operator-(unit ## _t left, unit ## _t right);    \
+    unit ## _t operator-(unit ## _t left);                      \
+    bool operator<(unit ## _t left, unit ## _t right);          \
+    bool operator<=(unit ## _t left, unit ## _t right);         \
+    bool operator>(unit ## _t left, unit ## _t right);          \
+    bool operator>=(unit ## _t left, unit ## _t right);         \
+    bool operator==(unit ## _t left, unit ## _t right);         \
+    bool operator!=(unit ## _t left, unit ## _t right);         \
+    unit ## _t operator "" _ ## unit(unsigned long long value); \
+
+
+OPERATOR_DECLARATION(ms)
+OPERATOR_DECLARATION(mm)
+OPERATOR_DECLARATION(deg)
+OPERATOR_DECLARATION(celsius)
+OPERATOR_DECLARATION(pascal)
+OPERATOR_DECLARATION(percent)
+
+#endif /* __cplusplus */

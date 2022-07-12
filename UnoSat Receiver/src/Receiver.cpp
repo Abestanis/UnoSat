@@ -18,10 +18,11 @@ void Receiver::handleMessages() {
 void Receiver::onDataMessage(
         ms_t time, deg_t latitude, deg_t longitude, mm_t attitude, uint8_t visibleSatellites,
         celsius_t temperature, percent_t humidity, pascal_t pressure) {
+    _lastMessageTimestamp = ms_t(millis());
     // Serial.print("[DATA ] (");
     // Serial.print(time.ms);
     // Serial.print(") ");
-    screen.printAt("Temp: ", 0, 2);
+    screen.printAt("Temp: ", 0, 3);
     screen.print(temperature.celsius);
     screen.print(" C");
     // Serial.print("Temperature: ");
@@ -54,6 +55,7 @@ void Receiver::onDataMessage(
 }
 
 void Receiver::onNewLogMessage(ms_t time, LogLevel level, uint16_t size, const char* message) {
+    _lastMessageTimestamp = ms_t(millis());
     switch (level) {
     case LOG_DEBUG:
         // Serial.print("[DEBUG]");

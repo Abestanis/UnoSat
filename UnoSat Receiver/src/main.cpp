@@ -17,11 +17,27 @@ void setup() {
     screen.printCentered("UnoSat Receiver", 0);
     screen.printCentered("Booting...", 2);
     loraSerial.begin(9600);
-    lora.begin(868.0);
+    bool loraConnectionOk = lora.begin(868.0);
 //    Serial.println("Boot complete");
     screen.printCentered("Boot complete", 2);
+    screen.printAt("LoRa: ", 0, 2);
+    screen.print(loraConnectionOk ? "Ok" : "Missing");
+    screen.clearToNextLine();
+    screen.print("Listening...");
+    screen.clearToNextLine();
 }
 
 void loop() {
+    static bool isNoConnectionShown = false;
     loraReceiver.handleMessages();
+    if (ms_t(millis()) - loraReceiver.lastMessageTimestamp() < 10000_ms) {
+        isNoConnectionShown = false;
+    } else if (!isNoConnectionShown) {
+        screen.printCentered("<No connection>", 3);
+        screen.clearToNextLine();
+        screen.clearToNextLine();
+        screen.clearToNextLine();
+        screen.clearToNextLine();
+        isNoConnectionShown = true;
+    }
 }
