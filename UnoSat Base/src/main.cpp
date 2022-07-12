@@ -19,10 +19,10 @@ static Sensor::Pressure pressureSensor;
 
 static void delayUntil(ms_t wakeTime) {
     ms_t currentTime = ms_t(millis());
-    if (currentTime.ms > wakeTime.ms) {
+    if (currentTime > wakeTime) {
         return;
     }
-    delay(wakeTime.ms - currentTime.ms);
+    delay((wakeTime - currentTime).ms);
 }
 
 extern "C" bool writeTelemetry(void* data, size_t size) {
@@ -69,9 +69,9 @@ void loop() {
     pascal_t pressure = pascal_t(0);
     pressureSensor.readPressure(pressure);
 
-    deg_t latitude = deg_t(rtkGps.getLastLatitude().deg);
-    deg_t longitude = deg_t(rtkGps.getLastLongitude().deg);
-    mm_t altitude = mm_t(rtkGps.getLastAttitude().mm);
+    deg_t latitude = rtkGps.getLastLatitude();
+    deg_t longitude = rtkGps.getLastLongitude();
+    mm_t altitude = rtkGps.getLastAttitude();
     uint8_t visibleSatellites = rtkGps.getLastVisibleSatellites();
 
     if (!hasLastSend) {
@@ -98,5 +98,5 @@ void loop() {
     screen.clearRemainingLine();
 
     // Sleep to keep a constant rate
-    delayUntil(ms_t(loopStart.ms + 800));
+    delayUntil(loopStart + 800_ms);
 }

@@ -30,7 +30,7 @@ typedef struct MessageHandler {
      * @param attitude The current attitude of the system.
      * @param visibleSatellites The number of visible satellites.
      */
-    void (* handleMessageGps)(struct MessageHandler* handler, deg_t latitude, deg_t longitude, mm_t attitude, uint8_t visibleSatellites);
+    void (* handleMessageGps)(struct MessageHandler* handler, rtk_deg_t latitude, rtk_deg_t longitude, rtk_mm_t attitude, uint8_t visibleSatellites);
 
     /**
      * Handle a LOG message.

@@ -6,7 +6,7 @@
 
 bool parseMessage(BufferAccessor* buffer, MessageHandler* handler) {
     size_t availableSize = buffer->availableBytes(buffer);
-    while (availableSize > 0) {
+    while (availableSize >= sizeof(TelemetryMessageHeader)) {
         uint8_t byteRead;
         if (!buffer->peek(buffer, &byteRead, sizeof(byteRead), 0) || byteRead != SYNC_BYTE_1 ||
             !buffer->peek(buffer, &byteRead, sizeof(byteRead), 1) || byteRead != SYNC_BYTE_2) {
@@ -24,22 +24,18 @@ bool parseMessage(BufferAccessor* buffer, MessageHandler* handler) {
             if (buffer->availableBytes(buffer) < dataSize) {
                 return false;
             }
-            deg_t latitude;
+            rtk_deg_t latitude;
             buffer->peek(buffer, &latitude, sizeof(latitude), sizeof(header));
-            dataSize += sizeof(deg_t);
             static_assert(sizeof(float) == 4,
                     "float has an invalid size on this platform and can not be used");
-            deg_t longitude;
+            rtk_deg_t longitude;
             buffer->peek(buffer, &longitude, sizeof(longitude), sizeof(header) + 4);
-            dataSize += sizeof(deg_t);
             static_assert(sizeof(float) == 4,
                     "float has an invalid size on this platform and can not be used");
-            mm_t attitude;
+            rtk_mm_t attitude;
             buffer->peek(buffer, &attitude, sizeof(attitude), sizeof(header) + 8);
-            dataSize += sizeof(mm_t);
             uint8_t visibleSatellites;
             buffer->peek(buffer, &visibleSatellites, sizeof(visibleSatellites), sizeof(header) + 12);
-            dataSize += sizeof(uint8_t);
             size_t checksumStartOffset =
                     sizeof(header.syncByte1) + sizeof(header.syncByte2) + sizeof(header.checksum);
             if (header.checksum != calculateChecksumFromBuffer(buffer,

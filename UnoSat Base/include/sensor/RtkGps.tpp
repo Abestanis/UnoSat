@@ -28,7 +28,7 @@ public:
     void handleMessages() {
         if (rtkStream.available()) {
             rtkMessageBuffer.copyFrom(rtkStream);
-            while (parseMessage(*rtkMessageBuffer, &handler)) {
+            while (Rtk::parseMessage(*rtkMessageBuffer, &handler)) {
             }
         }
     }
@@ -37,15 +37,15 @@ public:
         return lastGpsTimestamp;
     }
 
-    Rtk::deg_t getLastLatitude() const {
+    deg_t getLastLatitude() const {
         return lastLatitude;
     }
 
-    Rtk::deg_t getLastLongitude() const {
+    deg_t getLastLongitude() const {
         return lastLongitude;
     }
 
-    Rtk::mm_t getLastAttitude() const {
+    mm_t getLastAttitude() const {
         return lastAttitude;
     }
 
@@ -54,12 +54,12 @@ public:
     }
 
 protected:
-    void onNewGpsMessage(Rtk::deg_t latitude, Rtk::deg_t longitude, Rtk::mm_t attitude,
+    void onNewGpsMessage(Rtk::rtk_deg_t latitude, Rtk::rtk_deg_t longitude, Rtk::rtk_mm_t attitude,
                          uint8_t visibleSatellites) {
         lastGpsTimestamp = millis();
-        lastLatitude = latitude;
-        lastLongitude = longitude;
-        lastAttitude = attitude;
+        lastLatitude = deg_t(latitude.rtk_deg);
+        lastLongitude = deg_t(longitude.rtk_deg);
+        lastAttitude = mm_t(attitude.rtk_mm);
         lastVisibleSatellites = visibleSatellites;
     }
 
@@ -90,10 +90,10 @@ protected:
 
     Rtk::MessageHandler handler {
             .handleMessageGps = [](
-                    Rtk::MessageHandler* self, Rtk::deg_t latitude, Rtk::deg_t longitude, Rtk::mm_t attitude,
-                    uint8_t visibleSatellites) {
-                return ((RtkGps<S>*) self->data)
-                        ->onNewGpsMessage(latitude, longitude, attitude, visibleSatellites);
+                    Rtk::MessageHandler* self, Rtk::rtk_deg_t latitude, Rtk::rtk_deg_t longitude,
+                    Rtk::rtk_mm_t attitude, uint8_t visibleSatellites) {
+                return ((RtkGps<S>*) self->data)->onNewGpsMessage(
+                        latitude, longitude, attitude, visibleSatellites);
             },
             .handleMessageLog = [](Rtk::MessageHandler* self, uint16_t size, const char* message) {
                 return ((RtkGps<S>*) self->data)->onNewLogMessage(message, size);
@@ -105,8 +105,8 @@ protected:
     };
 
     uint32_t lastGpsTimestamp = 0;
-    Rtk::deg_t lastLatitude = {};
-    Rtk::deg_t lastLongitude = {};
-    Rtk::mm_t lastAttitude = {};
+    deg_t lastLatitude = {};
+    deg_t lastLongitude = {};
+    mm_t lastAttitude = {};
     uint8_t lastVisibleSatellites = 0;
 };

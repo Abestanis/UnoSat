@@ -55,21 +55,46 @@ extern "C" {
     } unit##variant##_t
 
 /**
+ * A time in milliseconds.
+ */
+UNIT_TYPE(uint32_t, rtk_ms);
+#define rtk_ms_t_CONSTRUCTOR(value) ((rtk_ms_t) {value})
+#define rtk_ms_t(...) ADD_UNIT_CONSTRUCTOR(rtk_ms_t, rtk_ms_t_CONSTRUCTOR, __VA_ARGS__)
+
+/**
  * A distance in milli meter.
  */
-UNIT_TYPE(int32_t, mm);
-#define mm_t_CONSTRUCTOR(value) ((mm_t) {value})
-#define mm_t(...) ADD_UNIT_CONSTRUCTOR(mm_t, mm_t_CONSTRUCTOR, __VA_ARGS__)
+UNIT_TYPE(int32_t, rtk_mm);
+#define rtk_mm_t_CONSTRUCTOR(value) ((rtk_mm_t) {value})
+#define rtk_mm_t(...) ADD_UNIT_CONSTRUCTOR(rtk_mm_t, rtk_mm_t_CONSTRUCTOR, __VA_ARGS__)
 
 /**
  * An angle in degrees.
  */
-UNIT_TYPE(float, deg);
-#define deg_t_CONSTRUCTOR(value) ((deg_t) {value})
-#define deg_t(...) ADD_UNIT_CONSTRUCTOR(deg_t, deg_t_CONSTRUCTOR, __VA_ARGS__)
+UNIT_TYPE(float, rtk_deg);
+#define rtk_deg_t_CONSTRUCTOR(value) ((rtk_deg_t) {value})
+#define rtk_deg_t(...) ADD_UNIT_CONSTRUCTOR(rtk_deg_t, rtk_deg_t_CONSTRUCTOR, __VA_ARGS__)
 
 
 
 #ifdef __cplusplus
 }
-#endif
+
+#define OPERATOR_DECLARATION(unit)                              \
+    unit ## _t operator+(unit ## _t left, unit ## _t right);    \
+    unit ## _t operator-(unit ## _t left, unit ## _t right);    \
+    unit ## _t operator-(unit ## _t left);                      \
+    bool operator<(unit ## _t left, unit ## _t right);          \
+    bool operator<=(unit ## _t left, unit ## _t right);         \
+    bool operator>(unit ## _t left, unit ## _t right);          \
+    bool operator>=(unit ## _t left, unit ## _t right);         \
+    bool operator==(unit ## _t left, unit ## _t right);         \
+    bool operator!=(unit ## _t left, unit ## _t right);         \
+    unit ## _t operator "" _ ## unit(unsigned long long value); \
+
+
+OPERATOR_DECLARATION(rtk_ms)
+OPERATOR_DECLARATION(rtk_mm)
+OPERATOR_DECLARATION(rtk_deg)
+
+#endif /* __cplusplus */
