@@ -16,9 +16,11 @@ bool Logger::enableDebugMessages = false;
  * @param args Arguments for creating the message.
  */
 static void sendMessage(LogLevel level, const char *format, va_list args) {
-    size_t length = vsnprintf(nullptr, 0, format, args) + 1;
+    // This is optimized for memory efficiency, at the cost of speed:
+    // We have to call the formatter function twice, but we only exactly use as much memory as necessary.
+    size_t length = vsnprintf(nullptr, 0, format, args);
     char buffer[length + 1];
-    vsnprintf(buffer, length, format, args);
+    vsnprintf(buffer, length + 1, format, args);
     sendTelemetryLog(ms_t(millis()), level, length, buffer);
 }
 
