@@ -1,0 +1,5 @@
+Name,Type,Description
+time,ms,The CPU time this telemetry was generated.
+temperature,celsius,The temperature.
+humidity,percent,The air humidity.
+pressure,pascal,The air pressure.
