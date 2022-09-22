@@ -8,10 +8,16 @@ It will print a two log messages during boot and then send a package with the cu
 The simple groundstation example from the ECom library can be used to see the messages on a connected computer.
 
 ## Requirements
+### Hardware
 
+* Arduino Uno
+
+### Software
 This project uses the [ECom](https://gitlab.com/team-aster/software/ecom) library
 to define how to communicate with the Arduino and for generating some code for it.
-The library must be installed if any changes to the communication are necessary.
+The library must be installed if any changes to the communication are necessary. It also includes a
+[simple groundstation](https://gitlab.com/team-aster/software/ecom/-/tree/main/examples/simpleGroundstation)
+as an example, which can be used to read the telemetry from the Arduino.
 
 Because the code in this project is spread out over multiple files,
 the Arduino IDE can not be used to compile and upload the project onto the Arduino.
