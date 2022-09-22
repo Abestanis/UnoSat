@@ -25,7 +25,7 @@ After the installation, run the following command in the [root directory of the 
 pio project init
 ```
 
-## Building
+## Building and Flashing
 
 To build the project and upload it to an Arduino Uno, connect the Arduino to the computer.
 If some hardware is connected to the UART1 port of the Arduino, temporarily unplug it,
