@@ -18,7 +18,12 @@ bool Logger::enableDebugMessages = false;
 static void sendMessage(LogLevel level, const char *format, va_list args) {
     // This is optimized for memory efficiency, at the cost of speed:
     // We have to call the formatter function twice, but we only exactly use as much memory as necessary.
-    size_t length = vsnprintf(nullptr, 0, format, args);
+    va_list argsCopy;
+    va_copy(argsCopy, args);
+    size_t length = vsnprintf(nullptr, 0, format, argsCopy);
+    if (length > UINT16_MAX) {
+        length = UINT16_MAX;
+    }
     char buffer[length + 1];
     vsnprintf(buffer, length + 1, format, args);
     sendTelemetryLog(ms_t(millis()), level, length, buffer);
