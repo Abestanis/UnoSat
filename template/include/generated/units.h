@@ -66,19 +66,48 @@ UNIT_TYPE(uint32_t, ms);
 #ifdef __cplusplus
 }
 
-#define OPERATOR_DECLARATION(unit)                              \
-    unit ## _t operator+(unit ## _t left, unit ## _t right);    \
-    unit ## _t operator-(unit ## _t left, unit ## _t right);    \
-    unit ## _t operator-(unit ## _t left);                      \
-    bool operator<(unit ## _t left, unit ## _t right);          \
-    bool operator<=(unit ## _t left, unit ## _t right);         \
-    bool operator>(unit ## _t left, unit ## _t right);          \
-    bool operator>=(unit ## _t left, unit ## _t right);         \
-    bool operator==(unit ## _t left, unit ## _t right);         \
-    bool operator!=(unit ## _t left, unit ## _t right);         \
-    unit ## _t operator "" _ ## unit(unsigned long long value); \
+#define OPERATOR_IMPLEMENTATION(unit, baseType)                                     \
+    constexpr unit ## _t operator+(const unit ## _t left, const unit ## _t right) { \
+        return unit ## _t(left.unit + right.unit);                                  \
+    }                                                                               \
+                                                                                    \
+    constexpr unit ## _t operator-(const unit ## _t left, const unit ## _t right) { \
+        return unit ## _t(left.unit - right.unit);                                  \
+    }                                                                               \
+                                                                                    \
+    constexpr unit ## _t operator-(const unit ## _t left) {                         \
+        return unit ## _t(-left.unit);                                              \
+    }                                                                               \
+                                                                                    \
+    constexpr bool operator<(const unit ## _t left, const unit ## _t right) {       \
+        return left.unit < right.unit;                                              \
+    }                                                                               \
+                                                                                    \
+    constexpr bool operator<=(const unit ## _t left, const unit ## _t right) {      \
+        return left.unit <= right.unit;                                             \
+    }                                                                               \
+                                                                                    \
+    constexpr bool operator>(const unit ## _t left, const unit ## _t right) {       \
+        return left.unit > right.unit;                                              \
+    }                                                                               \
+                                                                                    \
+    constexpr bool operator>=(const unit ## _t left, const unit ## _t right) {      \
+        return left.unit >= right.unit;                                             \
+    }                                                                               \
+                                                                                    \
+    constexpr bool operator==(const unit ## _t left, const unit ## _t right) {      \
+        return left.unit == right.unit;                                             \
+    }                                                                               \
+                                                                                    \
+    constexpr bool operator!=(const unit ## _t left, const unit ## _t right) {      \
+        return left.unit != right.unit;                                             \
+    }                                                                               \
+                                                                                    \
+    constexpr unit ## _t operator "" _ ## unit(unsigned long long value) {          \
+        return unit ## _t(static_cast<baseType>(value));                            \
+    }                                                                                \
 
 
-OPERATOR_DECLARATION(ms)
+OPERATOR_IMPLEMENTATION(ms, uint32_t)
 
 #endif /* __cplusplus */

@@ -3,6 +3,9 @@
 #include "generated/telemetry.h"
 #include "log.h"
 
+/** The frequency at which the main loop will be running */
+static constexpr ms_t MAIN_LOOP_FREQUENCY = 1000_ms;
+
 // Send our telemetry via the hardware serial (UART1).
 static HardwareSerial &outputSerial = Serial;
 
@@ -57,5 +60,5 @@ void loop() {
     sendTelemetryHeartbeat(loopStart);
 
     // Execute the main loop at a constant rate.
-    delayUntil(loopStart + 1000_ms);
+    delayUntil(loopStart + MAIN_LOOP_FREQUENCY);
 }
