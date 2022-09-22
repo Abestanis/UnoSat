@@ -19,8 +19,6 @@ bool FileSystem::isInitialized() {
     return isFileSystemInitialized;
 }
 
-
-
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
 
 static void listDirectory(FsFile& directory, uint8_t flags = 0, uint8_t indent = 0) {
@@ -28,8 +26,8 @@ static void listDirectory(FsFile& directory, uint8_t flags = 0, uint8_t indent =
     while (child.openNext(&directory, O_RDONLY)) {
         {
             // We can't allocate much more, the RAM on the Arduino UNO is very limited.
-            char buffer[128];
-            // print any indent spaces
+            char buffer[96];
+            // Print any indent spaces
             memset(buffer, ' ', indent);
             size_t writeOffset = indent;
             writeOffset += child.getName(&buffer[writeOffset], ARRAY_SIZE(buffer) - writeOffset);
@@ -37,29 +35,30 @@ static void listDirectory(FsFile& directory, uint8_t flags = 0, uint8_t indent =
                 buffer[writeOffset++] = '/';
             }
 
-            // print modify date/time if requested
-//            constexpr size_t dateSize = sizeof("YYYY-MM-DD") - 1;
-//            constexpr size_t timeSize = sizeof("hh:mm") - 1;
-//            if ((flags & LS_DATE) && writeOffset < ARRAY_SIZE(buffer) - (3 + dateSize + timeSize)) {
-//                uint16_t modifiedDate, modifiedTime;
-//                if (child.getModifyDateTime(&modifiedDate, &modifiedTime)) {
-//                    buffer[writeOffset++] = ' ';
-//                    writeOffset += dateSize; // Increment first, because `fsFmtDate` writes backwards for some reason.
-//                    fsFmtDate(&buffer[writeOffset], modifiedDate);
-//                    buffer[writeOffset++] = ' ';
-//                    writeOffset += timeSize; // Increment first, because `fsFmtTime` writes backwards for some reason.
-//                    fsFmtTime(&buffer[writeOffset], modifiedTime);
-//                }
-//            }
-//            // print size if requested
-//            if ((flags & LS_SIZE) && !child.isDirectory() && writeOffset < ARRAY_SIZE(buffer) - 10) {
-//                buffer[writeOffset++] = ' ';
-//                writeOffset += sprintf(&buffer[writeOffset], "%lu", (unsigned long) child.size());
-//            }
+            // Print modify date/time if requested
+            constexpr size_t dateSize = sizeof("YYYY-MM-DD") - 1;
+            constexpr size_t timeSize = sizeof("hh:mm") - 1;
+            if ((flags & LS_DATE) && writeOffset < ARRAY_SIZE(buffer) - (3 + dateSize + timeSize)) {
+                uint16_t modifiedDate, modifiedTime;
+                if (child.getModifyDateTime(&modifiedDate, &modifiedTime)) {
+                    buffer[writeOffset++] = ' ';
+                    writeOffset += dateSize; // Increment first, because `fsFmtDate` writes backwards for some reason.
+                    fsFmtDate(&buffer[writeOffset], modifiedDate);
+                    buffer[writeOffset++] = ' ';
+                    writeOffset += timeSize; // Increment first, because `fsFmtTime` writes backwards for some reason.
+                    fsFmtTime(&buffer[writeOffset], modifiedTime);
+                }
+            }
+
+            // Print size if requested
+            if ((flags & LS_SIZE) && !child.isDirectory() && writeOffset < ARRAY_SIZE(buffer) - 10) {
+                buffer[writeOffset++] = ' ';
+                writeOffset += sprintf(&buffer[writeOffset], "%lu", (unsigned long) child.size());
+            }
+
             buffer[writeOffset] = '\0';
             Logger::info(buffer);
         }
-
         // list subdirectory content if requested
         if ((flags & LS_R) && child.isDirectory()) {
             listDirectory(child, flags, indent + 2);
@@ -69,28 +68,27 @@ static void listDirectory(FsFile& directory, uint8_t flags = 0, uint8_t indent =
 }
 
 void FileSystem::logFileSystemInfo() {
-
     // print the type of card
-//    const char* cardType;
-//    switch (sd.card()->type()) {
-//        case SD_CARD_TYPE_SD1:
-//            cardType = "SD1";
-//            break;
-//        case SD_CARD_TYPE_SD2:
-//            cardType = "SD2";
-//            break;
-//        case SD_CARD_TYPE_SDHC:
-//            csd_t csd;
-//            if (sd.card()->readCSD(&csd) && csd.capacity() < 70000000) {
-//                cardType = "SDHC";
-//            } else {
-//                cardType = "SDXC";
-//            }
-//            break;
-//        default:
-//            cardType = "Unknown";
-//    }
-//    Logger::debugFormatted("Card type: %s", cardType);
+    const char* cardType;
+    switch (sd.card()->type()) {
+        case SD_CARD_TYPE_SD1:
+            cardType = "SD1";
+            break;
+        case SD_CARD_TYPE_SD2:
+            cardType = "SD2";
+            break;
+        case SD_CARD_TYPE_SDHC:
+            csd_t csd;
+            if (sd.card()->readCSD(&csd) && csd.capacity() < 70000000) {
+                cardType = "SDHC";
+            } else {
+                cardType = "SDXC";
+            }
+            break;
+        default:
+            cardType = "Unknown";
+    }
+    Logger::debugFormatted("Card type: %s", cardType);
 
     // print the type and size of the first FAT-type volume
     const char* volumeType;
