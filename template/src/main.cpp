@@ -35,7 +35,7 @@ extern "C" bool writeTelemetry(void *data, size_t size) {
  * Initialize the system.
  */
 void setup() {
-    Logger::enableDebugMessages = true;
+    Logger::sendDebugMessages(true);
     outputSerial.begin(19200);
     Logger::info("Booting...");
 

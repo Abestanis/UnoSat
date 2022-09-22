@@ -12,31 +12,57 @@ class Logger {
 public:
 
     /**
-     * Sends the formatted info message.
+     * Send a info message.
+     *
+     * @param message The message to send.
+     */
+    static void info(const char* message);
+
+    /**
+     * Send a formatted info message.
      *
      * @param format The format string.
      * @param ... Format values.
      */
-    static void info(const char* format, ...) PRINTF_LIKE(1, 2);
+    static void infoFormatted(const char* format, ...) PRINTF_LIKE(1, 2);
 
     /**
-     * Sends the formatted debug message only if [enableDebugMessages] is `true`.
+     * Send a debug message.
+     *
+     * @param message The message to send.
+     */
+    static void debug(const char* message);
+
+    /**
+     * Send a formatted debug message only if enabled via [sendDebugMessages].
      *
      * @param format The format string.
      * @param ... Format values.
      */
-    static void debug(const char* format, ...) PRINTF_LIKE(1, 2);
+    static void debugFormatted(const char* format, ...) PRINTF_LIKE(1, 2);
 
     /**
-     * Writes the formatted error message.
+     * Send a error message.
+     *
+     * @param message The message to send.
+     */
+    static void error(const char* message);
+
+    /**
+     * Send a formatted error message.
      *
      * @param format The format string.
      * @param ... Format values.
      */
-    static void error(const char* format, ...) PRINTF_LIKE(1, 2);
+    static void errorFormatted(const char* format, ...) PRINTF_LIKE(1, 2);
 
     /**
-     * Whether debug messages should be sent.
+     * Change if debug messages are sent.
+     *
+     * @param enabled Whether debug messages should be sent.
      */
-    static bool enableDebugMessages;
+    static void sendDebugMessages(bool enabled);
+
+private:
+    Logger() = default;
 };
