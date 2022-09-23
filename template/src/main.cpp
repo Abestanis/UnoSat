@@ -7,7 +7,7 @@
 static constexpr ms_t MAIN_LOOP_FREQUENCY = 1000_ms;
 
 // Send our telemetry via the hardware serial (UART1).
-static HardwareSerial &outputSerial = Serial;
+static HardwareSerial& outputSerial = Serial;
 
 /**
  * Block execution until the given time since boot has been reached.
@@ -29,8 +29,8 @@ static void delayUntil(ms_t wakeTime) {
  * @param data The serialized communication package.
  * @param size The size of the serialized communication package in bytes.
  */
-extern "C" bool writeTelemetry(void *data, size_t size) {
-    return outputSerial.write((uint8_t *) data, size);
+extern "C" bool writeTelemetry(void* data, size_t size) {
+    return outputSerial.write((uint8_t*) data, size) == size;
 }
 
 /**

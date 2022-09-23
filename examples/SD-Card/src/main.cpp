@@ -31,7 +31,7 @@ static void delayUntil(ms_t wakeTime) {
  * @param size The size of the serialized communication package in bytes.
  */
 extern "C" bool writeTelemetry(void* data, size_t size) {
-    bool serialOutputSucceeded = outputSerial.write((uint8_t*) data, size);
+    bool serialOutputSucceeded = outputSerial.write((uint8_t*) data, size) == size;
     bool logWriteSucceeded = FileSystem::writeToLogFile(data, size);
     return serialOutputSucceeded && logWriteSucceeded;
 }

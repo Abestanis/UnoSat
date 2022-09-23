@@ -41,8 +41,8 @@ static void delayUntil(ms_t wakeTime) {
  * @param data The serialized communication package.
  * @param size The size of the serialized communication package in bytes.
  */
-extern "C" bool writeTelemetry(void *data, size_t size) {
-    return lora.send(data, size);
+extern "C" bool writeTelemetry(void* data, size_t size) {
+    return lora.send(data, size) == size;
 }
 
 /**
