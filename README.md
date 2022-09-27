@@ -8,6 +8,8 @@ This project is designed for the [M2 TSI master](https://m2tsi.eu)
 at [Université Toulouse III-Paul Sabatier](https://www.univ-tlse3.fr)
 and to be used in the Balloon Project of the master.
 
+![An assembled UnoSat Lego structure with two Arduino Uno microcontrollers](images/UnoSat%20Stack.jpg)
+
 ## How to use it
 
 This repository contains a [template software project](template) that can be used with

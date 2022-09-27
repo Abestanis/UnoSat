@@ -7,6 +7,8 @@ The template is fully functional and can be uploaded to an Arduino Uno to test i
 It will print a two log messages during boot and then send a package with the current time since boot every second.
 The simple groundstation example from the ECom library can be used to see the messages on a connected computer.
 
+![Arduino Uno in UnoSat Lego template](images/Template.jpg)
+
 ## Requirements
 ### Hardware
 

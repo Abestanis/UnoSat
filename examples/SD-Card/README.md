@@ -5,6 +5,8 @@ with the UnoSat platform.
 The example is able to initialize the SD-Card while running,
 read some information from it and write all telemetry to a log file on it.
 
+![An Arduino Uno in the UnoSat Lego structure with an SD-Card shield](images/UnoSat%20with%20SD-Card%20Shield.jpg)
+
 ## Requirements
 ### Hardware
 
@@ -54,3 +56,11 @@ the following command has to be executed in the [current directory](.) to update
 ```shell
 python ecom/codeGen.py --database communication src include
 ```
+
+## Pin usage
+
+The SD-Card shield uses the following pins:
+* D4 (SD_CS)
+* D11 (SD_DI)
+* D12 (SD_DO)
+* D13 (SD_CLK)
