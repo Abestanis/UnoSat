@@ -1,0 +1,3 @@
+Name,Type,Description
+size,uint16_t,The size of the message in bytes.
+message,char[.size],The message text.

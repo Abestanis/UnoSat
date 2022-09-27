@@ -1,0 +1,4 @@
+Name,Description
+HEARTBEAT,A packet to indicate that the system is running.
+LOG,A packet containing a log message.
+LOCATION,Location data.

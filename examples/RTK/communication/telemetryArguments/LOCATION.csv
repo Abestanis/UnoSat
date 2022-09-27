@@ -1,0 +1,6 @@
+Name,Type,Description
+time,ms,The CPU time this telemetry was generated.
+latitude,deg,The last known latitude of the system.
+longitude,deg,The last known longitude of the system.
+altitude,mm,The last known altitude of the system.
+visible satellites,uint8_t,The number of visible satellites.
