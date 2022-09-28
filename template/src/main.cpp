@@ -23,11 +23,12 @@ static void delayUntil(ms_t wakeTime) {
 }
 
 /**
- * Send a serialized communication package to send it to the base.
+ * Send a serialized communication package to the base.
  *
  * @note This will be called by the generated communication code when sending any telemetry.
  * @param data The serialized communication package.
  * @param size The size of the serialized communication package in bytes.
+ * @return Whether there were any errors during sending.
  */
 extern "C" bool writeTelemetry(void* data, size_t size) {
     return outputSerial.write((uint8_t*) data, size) == size;
