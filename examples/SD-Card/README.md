@@ -2,8 +2,10 @@
 
 This example shows how to use the [Seeed Studio SD-Card Shield V4](https://wiki.seeedstudio.com/SD_Card_shield_V4.0)
 with the UnoSat platform.
-The example is able to initialize the SD-Card while running,
+The example is able to initialize the SD-Card while running (so it is possible to remove and re-insert the SD-Card
+without restarting the Arduino, although that is not recommended),
 read some information from it and write all telemetry to a log file on it.
+The log is stored in a `log` folder on the SD-Card. When restarting, a new log file will be created.
 
 ![An Arduino Uno in the UnoSat Lego structure with an SD-Card shield](images/UnoSat%20with%20SD-Card%20Shield.jpg)
 
@@ -64,3 +66,15 @@ The SD-Card shield uses the following pins:
 * D11 (SD_DI)
 * D12 (SD_DO)
 * D13 (SD_CLK)
+
+## Read the log files
+
+The log files on the SD-Card are stored in the same format as if they were sent as regular telemetry,
+therefore they can not be read as simple text with a text editor.
+Because the telemetry is optimized for size and allows to detect invalid messages, the same applies
+to the saved files. They are as small as possible and if the SD-Card were to get corrupted, one could
+detect that while parsing the file.
+
+To parse the log files, The [ECom library](https://gitlab.com/team-aster/software/ecom) contains a
+small tool called `logConverter` that can convert the saved file into a csv file. The tool can be downloaded
+and its documentation can be read [here](https://gitlab.com/team-aster/software/ecom/-/tree/main/examples/logConverter).
