@@ -18,6 +18,7 @@ Without the base station, the setup will provide GPS position with regular preci
 ![Two Arduino Uno microcontrollers and a simpleRTK2B module](images/Full%20System.jpg)
 
 ## Requirements
+
 ### Hardware
 
 * 2x Arduino Uno
@@ -26,6 +27,9 @@ Without the base station, the setup will provide GPS position with regular preci
 * Either a breadboard or a soldering iron
 
 ### Software
+
+[Python](https://www.python.org) needs to be installed on the system, at least version `3.7` is required.
+
 This project uses the [ECom](https://gitlab.com/team-aster/software/ecom) library
 to define how to communicate with the Arduino and for generating some code for it.
 The library must be installed if any changes to the communication are necessary. It also includes a
@@ -36,6 +40,12 @@ Because the code in this project is spread out over multiple files,
 the Arduino IDE can not be used to compile and upload the project onto the Arduino.
 Instead, this project uses [PlatformIO](https://docs.platformio.org),
 which can be downloaded [here](https://docs.platformio.org/en/latest/core/installation/index.html).
+Also install the PlatformIO shell commands by following the instructions
+[here](https://docs.platformio.org/en/latest/core/installation/shell-commands.html).
+
+[Clion](https://www.jetbrains.com/clion) with the
+[Platform IO plugin](https://www.jetbrains.com/help/clion/platformio.html#install-plugin) can be used as an
+alternative to the Arduino IDE, but any other IDE should work as well.
 
 After the installation, run the following command in the [root directory of the project](.)
 (where this README is located) to finish initialization of the project:
@@ -43,7 +53,6 @@ After the installation, run the following command in the [root directory of the 
 ```shell
 pio project init
 ```
-
 
 ## Hardware setup
 
@@ -59,7 +68,6 @@ The TX pin (pin 8) on the Arduino is connected to the RX pin (pin 2) on the sens
 
 For the pin setup of the sensor Arduino and the simpleRTK2B module
 see the [RTK sensor documentation](RTK%20Sensor/README.md#hardware-setup).
-
 
 | Base Arduino pins                                   | Sensor Arduino pins                                       |
 |-----------------------------------------------------|-----------------------------------------------------------|
@@ -88,12 +96,33 @@ An explanation of the files and folders in that directory and how to edit them c
 [ECom documentation](https://ecom.readthedocs.io/en/latest/database/README.html).
 No special program is required, a simple text editor is enough. After the changes have been made,
 the following command has to be executed in the [root directory of the project](.) to update the generated code:
+
 ```shell
 ecomUpdate --database communication src include
 ```
-Now the [`main.cpp` file](src/main.cpp) can be edited to call the new generated functions and pass the data
-gathered in step 2 to send to the base. 
+
+If any changes are made to the [communication database of the RTK sensor](RTK%20Sensor/communication),
+the following command has to be executed:
 
 ```shell
-ecomUpdate --forBase --prefix rtk --database "RTK Sensor\communication" src include
+ecomUpdate --forBase --prefix rtk --database "RTK Sensor/communication" src include
 ```
+
+## Troubleshooting
+
+* `Error: Unknown command "pio"` or similar error:
+
+  This means that PlatformIO is not installed, or not installed correctly,
+  or that the PlatformIO shell commands are not installed correctly.
+  Make sure that no step in the [software requirements section](#software) was skipped.
+
+* `Error: Unknown command "ecomUpdate"` or similar error:
+
+  This means that ECom library is not installed. If the ECom library was just downloaded,
+  but not installed, then the full path to the `ecomUpdate.py` has to be specified when executing the command.
+
+* The `pio run` command fails while trying to find an upload port, even though the Arduino is connected.
+
+  Check that the cable to the Arduino is actually connected.
+  Additionally, old Windows systems might not have the required drivers installed to communicate with the Arduino.
+  In this case it is recommended to install the Arduino IDE, because that will also install all the necessary drivers.
