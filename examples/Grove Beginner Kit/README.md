@@ -1,7 +1,8 @@
 # Grove Beginner Kit for Arduino wireless example
 
 This example will demonstrate how to use the UnoSat platform with two Grove Beginner Kit for Arduino
-and two LoRa wireless communication modules to collect data on one of the Grove kits and send it to
+and two [Grove LoRa Radio wireless 868Mhz v1.0](https://wiki.seeedstudio.com/Grove_LoRa_Radio)
+communication modules to collect data on one of the Grove kits and send it to
 and display it on the second Grove Kit.
 
 The first Grove kit will collect temperature, humidity and pressure data.
@@ -17,7 +18,7 @@ the code for the second receiving Grove Kit is in the [`Receiver` directory](Rec
 ### Hardware
 
 * 2x Grove Beginner Kit for Arduino
-* 2x LoRa wireless module
+* 2x Grove LoRa Radio wireless 868Mhz v1.0 modules
 
 ### Software
 This project uses the [ECom](https://gitlab.com/team-aster/software/ecom) library
