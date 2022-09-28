@@ -12,12 +12,12 @@ namespace Rtk {
 #include "log.h"
 #include "RtkGps.h"
 
-/** The frequency at which the main loop will be running */
+/** The frequency at which the main loop will be running. */
 static constexpr ms_t MAIN_LOOP_FREQUENCY = 800_ms;
 /** The frequency at which telemetry should be send. */
 static constexpr ms_t TELEMETRY_SEND_FREQUENCY = ms_t(MAIN_LOOP_FREQUENCY.ms * 2 - 10);
 
-// Send our telemetry via the hardware serial (UART1).
+/** Send our telemetry via the hardware serial (UART1). */
 static HardwareSerial& outputSerial = Serial;
 
 static SoftwareSerial rtkSerial(7, 8);

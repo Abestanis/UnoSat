@@ -3,7 +3,7 @@
 #include <SoftwareSerial.h>
 #include "generated/telemetry.h"
 
-/** The frequency at which the main loop will be running */
+/** The frequency at which the main loop will be running. */
 static constexpr ms_t MAIN_LOOP_FREQUENCY = 1000_ms;
 
 /** The Rx pin for the communication with the base Arduino. */

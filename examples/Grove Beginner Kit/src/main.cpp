@@ -7,7 +7,7 @@
 #include "log.h"
 #include "LoRa.h"
 
-/** The frequency at which the main loop will be running */
+/** The frequency at which the main loop will be running. */
 static constexpr ms_t MAIN_LOOP_FREQUENCY = 800_ms;
 /** The frequency at which telemetry should be send. */
 static constexpr ms_t TELEMETRY_SEND_FREQUENCY = ms_t(MAIN_LOOP_FREQUENCY.ms * 2);

@@ -3,10 +3,10 @@
 #include "generated/telemetry.h"
 #include "log.h"
 
-/** The frequency at which the main loop will be running */
+/** The frequency at which the main loop will be running. */
 static constexpr ms_t MAIN_LOOP_FREQUENCY = 1000_ms;
 
-// Send our telemetry via the hardware serial (UART1).
+/** Send our telemetry via the hardware serial (UART1). */
 static HardwareSerial& outputSerial = Serial;
 
 /**
