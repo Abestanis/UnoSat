@@ -8,11 +8,12 @@
 /** The frequency at which the main loop will be running. */
 static constexpr ms_t MAIN_LOOP_FREQUENCY = 1000_ms;
 
-#define RFM95_CS 10
-#define RFM95_RST 9
-#define RFM95_INT 2
-
-static LoRa lora(RFM95_CS, RFM95_INT);
+/** The chip select pin for the LoRa module. */
+static constexpr uint8_t loraChipSelectPin = 10;
+/** The interrupt pin for the LoRa module. */
+static constexpr uint8_t loraInterruptPin = 2;
+/** The lora module to send telemetry to. */
+static LoRa lora(loraChipSelectPin, loraInterruptPin);
 
 /**
  * Block execution until the given time since boot has been reached.
