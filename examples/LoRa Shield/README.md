@@ -70,6 +70,15 @@ the following command has to be executed in the [root directory of the project](
 ecomUpdate --database communication src include
 ```
 
+## Pin usage
+
+The LoRa shield uses the following pins:
+
+* D2 (RFM95_INT)
+* D9 (RFM9x_RS)
+* D10 (RFM9x_CS)
+* D11 (RFM9x MOSI)
+
 ## Troubleshooting
 
 * `Error: Unknown command "pio"` or similar error:
