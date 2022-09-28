@@ -89,11 +89,11 @@ An explanation of the files and folders in that directory and how to edit them c
 No special program is required, a simple text editor is enough. After the changes have been made,
 the following command has to be executed in the [root directory of the project](.) to update the generated code:
 ```shell
-python ecom\codeGen.py --database communication src include
+ecomUpdate --database communication src include
 ```
 Now the [`main.cpp` file](src/main.cpp) can be edited to call the new generated functions and pass the data
 gathered in step 2 to send to the base. 
 
 ```shell
-python ecom\codeGen.py --forBase --prefix rtk --database "RTK Sensor\communication" src include
+ecomUpdate --forBase --prefix rtk --database "RTK Sensor\communication" src include
 ```

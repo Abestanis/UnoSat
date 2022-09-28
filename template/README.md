@@ -81,10 +81,10 @@ potentially read some data from it. There are three steps and locations to chang
    the communication database in the [`communication` folder](communication) has to be edited.
    An explanation of the files and folders in that directory and how to edit them can be found in the
    [ECom documentation](https://ecom.readthedocs.io/en/latest/database/README.html).
-   No special program is required, a simple tet editor is enough. After the changes have been made,
+   No special program is required, a simple text editor is enough. After the changes have been made,
    the following command has to be executed in the [root directory of the project](.) to update the generated code:
    ```shell
-   python ecom\codeGen.py --database communication src include
+   ecomUpdate --database communication src include
    ```
    Now the [`main.cpp` file](src/main.cpp) can be edited to call the new generated functions and pass the data
    gathered in step 2 to send to the base. 

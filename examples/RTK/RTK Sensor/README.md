@@ -81,11 +81,11 @@ No special program is required, a simple text editor is enough. After the change
 the following command has to be executed in the [root directory of the project](.) to update the generated code:
 
 ```shell
-python ecom\codeGen.py --database communication src include
+ecomUpdate --database communication src include
 ```
 
 The base Arduino has to be updated as well:
 
 ```shell
-python ecom\codeGen.py --forBase --prefix rtk --database communication ../src ../include
+ecomUpdate --forBase --prefix rtk --database communication ../src ../include
 ```

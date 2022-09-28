@@ -54,7 +54,7 @@ which serial port to upload to via the `--upload-port` argument.
 When changing the communication database in the [`communication` folder](communication),
 the following command has to be executed in the [current directory](.) to update the generated code:
 ```shell
-python ecom/codeGen.py --database communication src include
+ecomUpdate --database communication src include
 ```
 
 ## Pin usage

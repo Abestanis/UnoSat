@@ -50,7 +50,7 @@ typedef enum {
     LOG_DEBUG = 0,
     /** An informational message. */
     LOG_INFO = 1,
-    /** A message indicating an errorFormatted or failure. */
+    /** A message indicating an error or failure. */
     LOG_ERROR = 2,
 
     LOG_LEVEL_FIRST MAYBE_UNUSED = LOG_DEBUG,

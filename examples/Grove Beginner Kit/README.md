@@ -65,5 +65,5 @@ Follow [the receivers build and flash instructions](Receiver/README.md#building-
 When changing the communication database in the [`communication` folder](communication),
 the following command has to be executed in the [current directory](.) to update the generated code:
 ```shell
-python ecom/codeGen.py --database communication src include
+ecomUpdate --database communication src include
 ```
