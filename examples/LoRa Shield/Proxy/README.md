@@ -4,7 +4,7 @@ This is part of the UnoSat LoRa Shield example and demonstrate a very simple pro
 that sits between the groundstation and the base Arduino.
 The groundstation is most likely is running on a device that doesn't have direct access
 to a 433 MHz LoRa wireless module. This proxy, an Arduino Uno with a
-[LoRa 433 Mhz Radio Shield](https://www.makerfabs.com/lora-radio-shield-433mhz.html), allows the
+[LoRa 433 MHz Radio Shield](https://www.makerfabs.com/lora-radio-shield-433mhz.html), allows the
 groundstation to receive the messages send with LoRa via their USB port.
 
 ![Arduino Uno in UnoSat Lego template](images/Proxy.jpg)
@@ -14,7 +14,7 @@ groundstation to receive the messages send with LoRa via their USB port.
 ### Hardware
 
 * Arduino Uno
-* LoRa 433 Mhz Radio Shield
+* LoRa 433 MHz Radio Shield
 
 ### Software
 

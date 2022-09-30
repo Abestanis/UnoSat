@@ -9,7 +9,7 @@ its sensors, but receives sensor information from the base Grove Beginner Kit an
 ### Hardware
 
 * Grove Beginner Kit for Arduino
-* Grove LoRa Radio wireless 868Mhz v1.0 module
+* Grove LoRa Radio wireless 868 MHz v1.0 module
 
 ### Software
 

@@ -1,7 +1,7 @@
 # UnoSat LoRa Shield Example
 
 This example shows the basic template example with a
-[LoRa 433 Mhz Radio Shield](https://www.makerfabs.com/lora-radio-shield-433mhz.html).
+[LoRa 433 MHz Radio Shield](https://www.makerfabs.com/lora-radio-shield-433mhz.html).
 It demonstrates full wireless communication between a groundstation running on a device
 via a proxy Arduino Uno to a base Arduino Uno.
 
@@ -12,7 +12,7 @@ via a proxy Arduino Uno to a base Arduino Uno.
 ### Hardware
 
 * 2x Arduino Uno
-* 2x LoRa 433 Mhz Radio Shield
+* 2x LoRa 433 MHz Radio Shield
 
 ### Software
 
