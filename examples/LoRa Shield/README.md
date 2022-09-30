@@ -78,6 +78,8 @@ The LoRa shield uses the following pins:
 * D9 (RFM9x_RS)
 * D10 (RFM9x_CS)
 * D11 (RFM9x MOSI)
+* D12 (RFM9x MISO)
+* D13 (RFM9x SCK)
 
 ## Troubleshooting
 
