@@ -21,3 +21,5 @@ There are also various [examples](examples) which showcase how the template was 
 to quickly built some functionality which is commonly required of most satellite systems,
 like [local data storage using an SD-Card](examples/SD-Card) and
 [reading and transmitting sensor data](examples/Grove%20Beginner%20Kit).
+
+The UnoSat structure can be found in the [`structure`](structure) folder. 
