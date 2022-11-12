@@ -15,7 +15,7 @@ void Receiver::handleMessages() {
     }
 }
 
-void Receiver::onDataMessage(ms_t time, celsius_t temperature, percent_t humidity, pascal_t pressure) {
+void Receiver::onDataMessage(MAYBE_UNUSED ms_t time, celsius_t temperature, percent_t humidity, pascal_t pressure) {
     _lastMessageTimestamp = ms_t(millis());
     screen.printAt("Temp: ", 0, 3);
     screen.print(temperature.celsius);
@@ -31,7 +31,8 @@ void Receiver::onDataMessage(ms_t time, celsius_t temperature, percent_t humidit
     screen.clearRemainingLine();
 }
 
-void Receiver::onNewLogMessage(ms_t time, LogLevel level, uint16_t size, const char* message) {
+void Receiver::onNewLogMessage(MAYBE_UNUSED ms_t time, LogLevel level, MAYBE_UNUSED uint16_t size,
+                               MAYBE_UNUSED const char* message) {
     _lastMessageTimestamp = ms_t(millis());
     switch (level) {
         case LOG_DEBUG:

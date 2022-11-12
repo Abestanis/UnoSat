@@ -97,7 +97,7 @@ protected:
                     MessageHandler* self, ms_t time, LogLevel level, uint16_t size, const char* message) {
                 return ((Receiver*) self->data)->onNewLogMessage(time, level, size, message);
             },
-            .errorHandler = [](MessageHandler* self, ParserError error) {
+            .errorHandler = [](MAYBE_UNUSED MessageHandler* self, ParserError error) {
                 return Receiver::handleParserError(error);
             },
             .data = this,
