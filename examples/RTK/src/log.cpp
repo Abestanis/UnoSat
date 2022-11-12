@@ -33,10 +33,11 @@ static void sendFormattedMessage(LogLevel level, const char* format, va_list arg
     // We have to call the formatter function twice, but we only exactly use as much memory as necessary.
     va_list argsCopy;
     va_copy(argsCopy, args);
-    size_t length = vsnprintf(nullptr, 0, format, argsCopy);
-    if (length > UINT16_MAX) {
-        length = UINT16_MAX;
+    int formattingResult = vsnprintf(nullptr, 0, format, argsCopy);
+    if (formattingResult < 0) {
+        return;
     }
+    size_t length = (size_t) formattingResult > UINT16_MAX ? UINT16_MAX : (size_t) formattingResult;
     char buffer[length + 1];
     vsnprintf(buffer, length + 1, format, args);
     sendMessage(level, length, buffer);
