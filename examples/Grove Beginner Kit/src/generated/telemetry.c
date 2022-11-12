@@ -55,7 +55,7 @@ bool sendTelemetryData(ms_t time, celsius_t temperature, percent_t humidity, pas
     TelemetryDataType data;
     data.header.syncByte1 = SYNC_BYTE_1;
     data.header.syncByte2 = SYNC_BYTE_2;
-    data.header.type = TELEMETRY_DATA;
+    data.header.type = (uint8_t) TELEMETRY_DATA;
     data.data.time = time;
     data.data.temperature = temperature;
     static_assert(sizeof(float) == 4,
@@ -77,9 +77,9 @@ bool sendTelemetryLog(ms_t time, LogLevel level, uint16_t size, const char* mess
     TelemetryLogType* data = (TelemetryLogType*) dataBuffer;
     data->header.syncByte1 = SYNC_BYTE_1;
     data->header.syncByte2 = SYNC_BYTE_2;
-    data->header.type = TELEMETRY_LOG;
+    data->header.type = (uint8_t) TELEMETRY_LOG;
     data->data.time = time;
-    data->data.level = level;
+    data->data.level = (uint8_t) level;
     data->data.size = size;
     memcpy(&data->data.message, message, size * sizeof(message[0]));
     data->header.checksum = calculateChecksum(

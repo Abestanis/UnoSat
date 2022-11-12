@@ -51,7 +51,7 @@ bool sendTelemetryGps(deg_t latitude, deg_t longitude, mm_t altitude, uint8_t vi
     TelemetryGpsType data;
     data.header.syncByte1 = SYNC_BYTE_1;
     data.header.syncByte2 = SYNC_BYTE_2;
-    data.header.type = TELEMETRY_GPS;
+    data.header.type = (uint8_t) TELEMETRY_GPS;
     data.data.latitude = latitude;
     static_assert(sizeof(float) == 4,
             "float has an invalid size on this platform and can not be used");
@@ -73,7 +73,7 @@ bool sendTelemetryLog(uint16_t size, const char* message) {
     TelemetryLogType* data = (TelemetryLogType*) dataBuffer;
     data->header.syncByte1 = SYNC_BYTE_1;
     data->header.syncByte2 = SYNC_BYTE_2;
-    data->header.type = TELEMETRY_LOG;
+    data->header.type = (uint8_t) TELEMETRY_LOG;
     data->data.size = size;
     memcpy(&data->data.message, message, size * sizeof(message[0]));
     data->header.checksum = calculateChecksum(
