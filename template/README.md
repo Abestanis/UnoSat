@@ -19,7 +19,7 @@ The simple groundstation example from the ECom library can be used to see the me
 
 [Python](https://www.python.org) needs to be installed on the system, at least version `3.7` is required.
 
-This project uses the [ECom](https://gitlab.com/team-aster/software/ecom) library
+This project uses the [ECom](https://gitlab.com/team-aster/software/ecom) library (version `1.1`)
 to define how to communicate with the Arduino and for generating some code for it.
 The library must be installed if any changes to the communication are necessary. It also includes a
 [simple groundstation](https://gitlab.com/team-aster/software/ecom/-/tree/main/examples/simpleGroundstation)
