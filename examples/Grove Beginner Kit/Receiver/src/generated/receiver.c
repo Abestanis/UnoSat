@@ -5,13 +5,12 @@
 
 
 bool parseMessage(BufferAccessor* buffer, MessageHandler* handler) {
-    size_t availableSize = buffer->availableBytes(buffer);
-    while (availableSize >= sizeof(TelemetryMessageHeader)) {
+    for (size_t availableSize = buffer->availableBytes(buffer);
+         availableSize >= sizeof(TelemetryMessageHeader);
+         buffer->advance(buffer, 1), availableSize--) {
         uint8_t byteRead;
         if (!buffer->peek(buffer, &byteRead, sizeof(byteRead), 0) || byteRead != SYNC_BYTE_1 ||
             !buffer->peek(buffer, &byteRead, sizeof(byteRead), 1) || byteRead != SYNC_BYTE_2) {
-            buffer->advance(buffer, 1);
-            availableSize--;
             continue;
         }
         TelemetryMessageHeader header;
@@ -29,20 +28,20 @@ bool parseMessage(BufferAccessor* buffer, MessageHandler* handler) {
             celsius_t temperature;
             buffer->peek(buffer, &temperature, sizeof(temperature), sizeof(header) + 4);
             static_assert(sizeof(float) == 4,
-                    "float has an invalid size on this platform and can not be used");
+                "float has an invalid size on this platform and can not be used");
             percent_t humidity;
             buffer->peek(buffer, &humidity, sizeof(humidity), sizeof(header) + 8);
             static_assert(sizeof(float) == 4,
-                    "float has an invalid size on this platform and can not be used");
+                "float has an invalid size on this platform and can not be used");
             pascal_t pressure;
             buffer->peek(buffer, &pressure, sizeof(pressure), sizeof(header) + 12);
             size_t checksumStartOffset =
-                    sizeof(header.syncByte1) + sizeof(header.syncByte2) + sizeof(header.checksum);
+                sizeof(header.syncByte1) + sizeof(header.syncByte2) + sizeof(header.checksum);
             if (header.checksum != calculateChecksumFromBuffer(buffer,
                     sizeof(TelemetryMessageHeader) - checksumStartOffset + dataSize,
                     checksumStartOffset)) {
                 handler->errorHandler(handler, CHECKSUM_ERROR);
-                break;
+                continue;
             }
             buffer->advance(buffer, sizeof(header) + dataSize);
             handler->handleMessageData(handler, time, temperature, humidity, pressure);
@@ -67,7 +66,7 @@ bool parseMessage(BufferAccessor* buffer, MessageHandler* handler) {
             dataSize += sizeof(uint16_t);
             if (size > 512) {
                 handler->errorHandler(handler, DYNAMIC_SIZE_TOO_LARGE);
-                break;
+                continue;
             }
             char message[size];
             if (!buffer->peek(buffer, &message, sizeof(message), sizeof(header) + dataSize)) {
@@ -75,23 +74,20 @@ bool parseMessage(BufferAccessor* buffer, MessageHandler* handler) {
             }
             dataSize += size;
             size_t checksumStartOffset =
-                    sizeof(header.syncByte1) + sizeof(header.syncByte2) + sizeof(header.checksum);
+                sizeof(header.syncByte1) + sizeof(header.syncByte2) + sizeof(header.checksum);
             if (header.checksum != calculateChecksumFromBuffer(buffer,
                     sizeof(TelemetryMessageHeader) - checksumStartOffset + dataSize,
                     checksumStartOffset)) {
                 handler->errorHandler(handler, CHECKSUM_ERROR);
-                break;
+                continue;
             }
             buffer->advance(buffer, sizeof(header) + dataSize);
             handler->handleMessageLog(handler, time, level, size, message);
             return true;
         }
-
         default:
             handler->errorHandler(handler, INVALID_MESSAGE);
         }
-        buffer->advance(buffer, 2);
-        availableSize -= 2;
     }
     return false;
 }

@@ -6,6 +6,13 @@
 #include "generated/checksum.h"
 
 
+/**
+ * Send the serialized telemetry.
+ *
+ * @param data The serialized telemetry in a buffer.
+ * @param size The size of the serialized telemetry in bytes.
+ * @return Whether writing the telemetry was successful.
+ */
 extern bool writeTelemetry(void* data, size_t size);
 
 /** Data for the DATA message. */
@@ -59,10 +66,10 @@ bool sendTelemetryData(ms_t time, celsius_t temperature, percent_t humidity, pas
     data.data.time = time;
     data.data.temperature = temperature;
     static_assert(sizeof(float) == 4,
-            "float has an invalid size on this platform and can not be used");
+        "float has an invalid size on this platform and can not be used");
     data.data.humidity = humidity;
     static_assert(sizeof(float) == 4,
-            "float has an invalid size on this platform and can not be used");
+        "float has an invalid size on this platform and can not be used");
     data.data.pressure = pressure;
     data.header.checksum = calculateChecksum(
         &((uint8_t*) &data.header.checksum)[sizeof(data.header.checksum)],

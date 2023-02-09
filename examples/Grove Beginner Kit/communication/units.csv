@@ -1,5 +1,5 @@
 Name,Type,Description
-ms,uint32_t,A time in milliseconds.
+ms,uint32,A time in milliseconds.
 celsius,float,A temperature in degrees celsius.
-pascal,uint32_t,A barometric pressure in Pascal.
+pascal,uint32,A barometric pressure in Pascal.
 percent,float,A value between 0 and 100.

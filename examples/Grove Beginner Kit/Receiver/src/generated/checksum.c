@@ -13,7 +13,7 @@ WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t size, s
         crc ^= (uint16_t) (byte << 8U);
         for (uint8_t j = 0; j < 8U; j++) {
             if ((crc & 0x8000U) > 0U) {
-                crc = (crc << 1U) ^ POLYNOMIAL;
+                crc = (uint16_t) (crc << 1U) ^ POLYNOMIAL;
             } else {
                 crc <<= 1U;
             }

@@ -9,43 +9,100 @@ extern "C" {
 #endif
 
 
+/**
+ * A handle that provides access to a buffer.
+ *
+ * It allows functions to use a buffer as if it was continuous in memory,
+ * even though it might not be.
+ */
 typedef struct BufferAccessor {
-    size_t (* availableBytes)(const struct BufferAccessor* accessor);
+    /**
+     * @param accessor This buffer accessor.
+     * @return The number of bytes currently available for reading from the buffer.
+     */
+    size_t (*availableBytes)(const struct BufferAccessor* accessor);
 
-    bool (* peek)(const struct BufferAccessor* accessor,
-                  void* buffer, size_t size, size_t at);
+    /**
+     * Get a copy of a part of the buffer starting at the current read index,
+     * without advancing the read index.
+     *
+     * @param accessor This buffer accessor.
+     * @param buffer A buffer to copy the requested part of the underlying buffer to.
+     * @param size The number of bytes to request from the buffer.
+     * @param at The offset from the current read index to request the data from.
+     * @return Whether there was enough data available for reading to satisfy the request.
+     */
+    bool (*peek)(const struct BufferAccessor* accessor, void* buffer, size_t size, size_t at);
 
-    void (* advance)(struct BufferAccessor* accessor, size_t size);
+    /**
+     * Advance the read index by given number of bytes.
+     *
+     * @param accessor This buffer accessor.
+     * @param size The number of bytes to advance the read index by.
+     */
+    void (*advance)(struct BufferAccessor* accessor, size_t size);
 
+    /** Private data of this buffer accessor. */
     void* data;
 } BufferAccessor;
 
+/** Data for a simple buffer accessor that allows access to a simple continuous memory region. */
 typedef struct {
+    /** A pointer to the continuous memory region that this accessor provides access to. */
     const void* buffer;
+
+    /** The size of the continuous memory region in bytes. */
     size_t size;
+
+    /** The current read index from the start of the memory region. */
     size_t readOffset;
 } SimpleBufferAccessorData;
 
 
+/**
+ * Get the number of bytes available for reading in a simple buffer accessor.
+ * @param accessor The simple buffer accessor.
+ * @return The number of bytes available for reading.
+ */
 extern size_t simpleBufferAccessorGetAvailableBytes(const BufferAccessor* accessor);
 
-extern bool simpleBufferAccessorPeek(
-        const struct BufferAccessor* accessor, void* buffer, size_t size, size_t at);
+/**
+ * Get a copy of a part of the simple buffer starting at the current read index,
+ * without advancing the read index.
+ *
+ * @param accessor A simple buffer accessor.
+ * @param buffer A buffer to copy the requested part of the underlying buffer to.
+ * @param size The number of bytes to request from the buffer.
+ * @param at The offset from the current read index to request the data from.
+ * @return Whether there was enough data available for reading to satisfy the request.
+ */
+extern bool simpleBufferAccessorPeek(const struct BufferAccessor* accessor, void* buffer,
+    size_t size, size_t at);
 
+/**
+ * Advance the read index by given number of bytes.
+ *
+ * @param accessor A simple buffer accessor.
+ * @param size The number of bytes to advance the read index by.
+ */
 extern void simpleBufferAccessorAdvance(struct BufferAccessor* accessor, size_t size);
 
-#define CONSTRUCT_SIMPLE_ACCESSOR_FROM_BUFFER(name, sourceBuffer, size) \
-    SimpleBufferAccessorData name ## _data = {                          \
-         .buffer = (sourceBuffer),                                      \
-         .size = (size),                                                \
-         .readOffset = 0                                                \
-    };                                                                  \
-    BufferAccessor name = {                                             \
-        .availableBytes = simpleBufferAccessorGetAvailableBytes,        \
-        .peek = simpleBufferAccessorPeek,                               \
-        .advance = simpleBufferAccessorAdvance,                         \
-        .data = &(name ## _data)                                        \
-    }
+/**
+ * Define and construct a simple buffer accessor
+ * that provides access over a continuous memory region.
+ *
+ * @param name: The variable name of the simple buffer accessor.
+ * @param sourceBuffer: The continuous memory region that the accessor will provide access to.
+ * @param size: The size in bytes of the continuous memory region.
+ */
+#define CONSTRUCT_SIMPLE_ACCESSOR_FROM_BUFFER(name, sourceBuffer, size)             \
+    SimpleBufferAccessorData name##_data = {.buffer = (sourceBuffer),               \
+        .size = (size),                                                             \
+        .readOffset = 0};                                                           \
+    BufferAccessor name = {.availableBytes = simpleBufferAccessorGetAvailableBytes, \
+        .peek = simpleBufferAccessorPeek,                                           \
+        .advance = simpleBufferAccessorAdvance,                                     \
+        .data = &(name##_data)}
 
 
 #ifdef __cplusplus

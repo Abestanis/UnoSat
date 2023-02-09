@@ -12,39 +12,54 @@
 extern "C" {
 #endif
 
+/** An error during parsing of a message. */
 typedef enum {
+    /** The message type was not recognized. */
     INVALID_MESSAGE,
+
+    /** The checksum of the message was invalid. */
     CHECKSUM_ERROR,
+
+    /** A dynamic size was too large. */
     DYNAMIC_SIZE_TOO_LARGE,
 } ParserError;
 
 
+/** A handler of parsed messages. */
 typedef struct MessageHandler {
-
     /**
      * Handle a DATA message.
-     * 
+     *
      * @param handler The message handler.
      * @param time The CPU time this telemetry was generated.
      * @param temperature The temperature.
      * @param humidity The air humidity.
      * @param pressure The air pressure.
      */
-    void (* handleMessageData)(struct MessageHandler* handler, ms_t time, celsius_t temperature, percent_t humidity, pascal_t pressure);
+    void (*handleMessageData)(struct MessageHandler* handler, ms_t time, celsius_t temperature,
+        percent_t humidity, pascal_t pressure);
 
     /**
      * Handle a LOG message.
-     * 
+     *
      * @param handler The message handler.
      * @param time The CPU time this message was generated.
      * @param level The severity of this message.
      * @param size The size of the message in bytes.
      * @param message The message text.
      */
-    void (* handleMessageLog)(struct MessageHandler* handler, ms_t time, LogLevel level, uint16_t size, const char* message);
+    void (*handleMessageLog)(struct MessageHandler* handler, ms_t time, LogLevel level,
+        uint16_t size, const char* message);
 
-    void (* errorHandler)(struct MessageHandler* handler, ParserError error);
+    /**
+     * Handle an error during parsing of a message.
+     *
+     * @param handler The message handler.
+     * @param error The error that occurred.
+     */
+    void (*errorHandler)(struct MessageHandler* handler, ParserError error);
 
+    /** Private data of the message handler. */
     void* data;
 } MessageHandler;
 
