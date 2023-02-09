@@ -47,34 +47,21 @@ extern "C" bool writeTelemetry(void* data, size_t size) {
 }
 
 /**
- * Send a log message to the base Arduino.
- *
- * @param message A null terminated string containing the message.
- */
-static void print(const char* message) {
-    sendTelemetryLog(strlen(message), message);
-}
-
-/**
  * The standard Arduino setup function that will be called when the Arduino boots.
  * Initialize the system.
  */
 void setup() {
     outputSerial.begin(COMMUNICATION_BAUD_RATE);
-    print("Booting...");
 
     // Connect to the RTK GPS module.
     rtkSerial.begin(115200);
     while (!myGNSS.begin(rtkSerial)) {
-        //myGNSS.factoryReset();
         delay(1000);
     }
-    print("GNSS serial connected");
 
     // Configure the RTK GPS module
     myGNSS.setUART1Output(COM_TYPE_UBX); // Set the UART port to output UBX only
     myGNSS.saveConfiguration(); // Save the current settings to flash and BBR
-    print("Boot complete");
 }
 
 /**
