@@ -6,6 +6,13 @@
 #include "generated/checksum.h"
 
 
+/**
+ * Send the serialized telemetry.
+ *
+ * @param data The serialized telemetry in a buffer.
+ * @param size The size of the serialized telemetry in bytes.
+ * @return Whether writing the telemetry was successful.
+ */
 extern bool writeTelemetry(void* data, size_t size);
 
 /** Data for the GPS message. */
@@ -54,10 +61,10 @@ bool sendTelemetryGps(deg_t latitude, deg_t longitude, mm_t altitude, uint8_t vi
     data.header.type = (uint8_t) TELEMETRY_GPS;
     data.data.latitude = latitude;
     static_assert(sizeof(float) == 4,
-            "float has an invalid size on this platform and can not be used");
+        "float has an invalid size on this platform and can not be used");
     data.data.longitude = longitude;
     static_assert(sizeof(float) == 4,
-            "float has an invalid size on this platform and can not be used");
+        "float has an invalid size on this platform and can not be used");
     data.data.altitude = altitude;
     data.data.visibleSatellites = visibleSatellites;
     data.header.checksum = calculateChecksum(

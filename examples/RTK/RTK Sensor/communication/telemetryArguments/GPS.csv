@@ -2,4 +2,4 @@ Name,Type,Description
 latitude,deg,The current latitude of the system.
 longitude,deg,The current longitude of the system.
 altitude,mm,The current altitude of the system.
-visible satellites,uint8_t,The number of visible satellites.
+visible satellites,uint8,The number of visible satellites.
