@@ -6,6 +6,13 @@
 #include "generated/checksum.h"
 
 
+/**
+ * Send the serialized telemetry.
+ *
+ * @param data The serialized telemetry in a buffer.
+ * @param size The size of the serialized telemetry in bytes.
+ * @return Whether writing the telemetry was successful.
+ */
 extern bool writeTelemetry(void* data, size_t size);
 
 /** Data for the HEARTBEAT message. */
