@@ -12,37 +12,51 @@
 extern "C" {
 #endif
 
+/** An error during parsing of a message. */
 typedef enum {
+    /** The message type was not recognized. */
     INVALID_MESSAGE,
+
+    /** The checksum of the message was invalid. */
     CHECKSUM_ERROR,
+
+    /** A dynamic size was too large. */
     DYNAMIC_SIZE_TOO_LARGE,
 } ParserError;
 
 
+/** A handler of parsed messages. */
 typedef struct MessageHandler {
-
     /**
      * Handle a GPS message.
-     * 
+     *
      * @param handler The message handler.
      * @param latitude The current latitude of the system.
      * @param longitude The current longitude of the system.
      * @param altitude The current altitude of the system.
      * @param visibleSatellites The number of visible satellites.
      */
-    void (* handleMessageGps)(struct MessageHandler* handler, rtk_deg_t latitude, rtk_deg_t longitude, rtk_mm_t altitude, uint8_t visibleSatellites);
+    void (*handleMessageGps)(struct MessageHandler* handler, rtk_deg_t latitude,
+        rtk_deg_t longitude, rtk_mm_t altitude, uint8_t visibleSatellites);
 
     /**
      * Handle a LOG message.
-     * 
+     *
      * @param handler The message handler.
      * @param size The size of the message in bytes.
      * @param message The message text.
      */
-    void (* handleMessageLog)(struct MessageHandler* handler, uint16_t size, const char* message);
+    void (*handleMessageLog)(struct MessageHandler* handler, uint16_t size, const char* message);
 
-    void (* errorHandler)(struct MessageHandler* handler, ParserError error);
+    /**
+     * Handle an error during parsing of a message.
+     *
+     * @param handler The message handler.
+     * @param error The error that occurred.
+     */
+    void (*errorHandler)(struct MessageHandler* handler, ParserError error);
 
+    /** Private data of the message handler. */
     void* data;
 } MessageHandler;
 

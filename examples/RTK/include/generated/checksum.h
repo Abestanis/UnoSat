@@ -20,7 +20,7 @@ extern "C" {
  * @param buffer An accessor to the data to calculate the checksum from.
  * @param size The size of the data in bytes.
  * @param at The byte offset to start reading from the buffer.
- * @return Whether the telecommand could be handled.
+ * @return The CRC16 checksum of the buffer.
  */
 extern WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t size, size_t at);
 
@@ -29,7 +29,7 @@ extern WEAK uint16_t calculateChecksumFromBuffer(BufferAccessor* buffer, size_t 
  *
  * @param data A pointer to the data.
  * @param size The size of the data in bytes.
- * @return Whether the telecommand could be handled.
+ * @return The CRC16 checksum of the buffer.
  */
 extern WEAK uint16_t calculateChecksum(const void* data, size_t size);
 
